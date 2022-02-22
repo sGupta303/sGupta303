@@ -1,0 +1,17 @@
+public with sharing class ProcessOpportunities {
+    @AuraEnabled(cacheable = true)
+    public static list<Opportunity> getopportunity(){
+        List<Opportunity> detailList =[Select name,id,StageName,Type,CreatedById, CloseDate from opportunity];
+         return detailList;
+    }
+    @AuraEnabled
+    public static void deleteopportunity(Id opptId){
+        List<Opportunity> opplist =[Select name,id,StageName,Type,CreatedById, CloseDate from opportunity where Id=:opptId];
+        system.debug('list of opp'+opplist);
+        try {
+            delete opplist;
+        } catch (DmlException e) {
+            // Process exception here
+        } 
+    }
+}
